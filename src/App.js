@@ -3,13 +3,17 @@ import HomePage from './pages/HomePage';
 import EventProvider from './context/EventProvider';
 import Header from './components/Header';
 import Footer from './components/Footer';
-
+import '@fortawesome/fontawesome-free/css/all.min.css';
 function App() {
   return (
     <EventProvider>
-      <Header/>
-      <HomePage />
-      <Footer/>
+      <div id="App">
+        <Header/>
+        <main>
+          <HomePage />
+        </main>
+        <Footer/>
+      </div>
     </EventProvider>
   );
 }

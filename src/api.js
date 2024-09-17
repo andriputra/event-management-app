@@ -12,5 +12,20 @@ api.interceptors.request.use(config => {
   return config;
 });
 
-export const fetchEvents = () => api.get('/events');
+// Update fetchEvents to accept optional parameters
+export const fetchEvents = (category = '', date = '') => {
+  // Create a params object
+  const params = {};
+  if (category && category !== 'All') {
+    params.category = category;
+  }
+  if (date) {
+    params.date = date;
+  }
+  
+  // Pass the params object to axios
+  return api.get('/events', { params });
+};
+
+// Function to create a new event
 export const createEvent = (event) => api.post('/events', event);

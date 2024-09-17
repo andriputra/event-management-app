@@ -1,26 +1,42 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 const EventForm = ({ addEvent, onClose }) => {
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const currentDate = new Date().toISOString().split('T')[0]; 
+    
+    if (date < currentDate) {
+      setError('Event date cannot be earlier than today.');
+      return;
+    }
+
+    setIsLoading(true);
     await addEvent({ name, date, description, category });
     setName('');
     setDate('');
     setDescription('');
     setCategory('');
+    setIsLoading(false);
+    setError('');
     onClose(); 
   };
 
   return (
     <div className="modal">
       <div className="modal-content">
-        <span className="close" onClick={onClose}>&times;</span>
-        <h2>Add New Event</h2>
+        <div className='modal-header'>
+          <span className="close" onClick={onClose}><FontAwesomeIcon icon={faClose} /></span>
+          <h2>Add New Event</h2>
+        </div>
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="name">Event Name:</label>
@@ -40,8 +56,10 @@ const EventForm = ({ addEvent, onClose }) => {
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required
+              className={error ? 'error-input' : ''}
             />
           </div>
+          {error && <p className='error-message'>{error}</p>}
           <div>
             <label htmlFor="description">Event Description:</label>
             <textarea
@@ -65,7 +83,12 @@ const EventForm = ({ addEvent, onClose }) => {
               <option value="Tech">Tech</option>
             </select>
           </div>
-          <button type="submit">Add Event</button>
+          
+          {isLoading ? (
+            <button type="button" disabled>Loading...</button>
+          ) : (
+            <button type="submit">Add Event</button>
+          )}
         </form>
       </div>
     </div>

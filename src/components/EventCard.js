@@ -4,9 +4,11 @@ const EventCard = ({ event, selectEvent }) => {
   return (
     <div className="event-card" onClick={() => selectEvent(event)}>
       <h2>{event.name}</h2>
-      <p>Date: {event.date}</p>
-      <p>Description: {event.description}</p>
-      <p>Category: {event.category}</p>
+      <div className='event-card-detail'>
+        <p><span>Date:</span> <span>{event.date}</span></p>
+        <p><span>Description:</span> <span>{event.description}</span></p>
+        <p><span>Category:</span> <span>{event.category}</span></p>
+      </div>
     </div>
   );
 };

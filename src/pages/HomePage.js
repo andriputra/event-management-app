@@ -7,19 +7,19 @@ import { useEventContext } from '../context/EventProvider';
 import { fetchEvents, createEvent } from '../api';
 
 const HomePage = () => {
-  const { filterEvents, selectedEvent, selectEvent, setFilter } = useEventContext();
+  const { filter, setFilter, selectEvent, selectedEvent } = useEventContext();
+  const [showModal, setShowModal] = useState(false);
   const [events, setEvents] = useState([]);
-  const [showModal, setShowModal] = useState(false); 
 
   const handleFilterChange = (filter) => {
     setFilter(filter);
-    filterEvents(filter);
   };
 
   useEffect(() => {
     const loadEvents = async () => {
       try {
-        const response = await fetchEvents();
+        const { category, date } = filter;
+        const response = await fetchEvents(category, date);
         setEvents(response.data);
       } catch (error) {
         console.error('Error fetching events:', error);
@@ -27,12 +27,14 @@ const HomePage = () => {
     };
     
     loadEvents();
-  }, []);
+  }, [filter]);
 
   const addEvent = async (event) => {
     try {
       await createEvent(event);
-      const response = await fetchEvents();
+      // Re-fetch events after adding a new event
+      const { category, date } = filter;
+      const response = await fetchEvents(category, date);
       setEvents(response.data);
     } catch (error) {
       console.error('Error adding event:', error);
@@ -43,11 +45,11 @@ const HomePage = () => {
     <div className="homepage">
       <div className="filters">
         <EventFilter onFilterChange={handleFilterChange} />
+        <button className='btn-prime' onClick={() => setShowModal(true)}>Add Event</button>
       </div>
-      <button onClick={() => setShowModal(true)}>Add Event</button>
       {showModal && <EventForm addEvent={addEvent} onClose={() => setShowModal(false)} />}
       <EventList events={events} selectEvent={selectEvent} />
-      {selectedEvent && <EventDetails event={selectedEvent} />}
+      {selectedEvent && <EventDetails event={selectedEvent} onClose={() => selectEvent(null)} />}
     </div>
   );
 };

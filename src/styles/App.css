@@ -1,24 +1,4 @@
-.App {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-}
-
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content {
-  background-color: white;
-  margin: 15% auto;
-  padding: 20px;
-  width: 300px;
-}
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 /* Reset CSS */
 * {
   margin: 0;
@@ -26,17 +6,25 @@
   box-sizing: border-box;
 }
 
+*:hover{
+  cursor: pointer;
+}
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   line-height: 1.6;
   background-color: #f4f4f4;
+  height: 100%;
 }
 
 /* Container */
-.App {
+#App {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+main{
+  flex: 1;
 }
 
 .homepage {
@@ -46,9 +34,8 @@ body {
   gap: 20px;
 }
 
-/* Header (assume you have a header component) */
 header {
-  background-color: #333;
+  background-color: #e37070;
   color: white;
   padding: 20px;
   text-align: center;
@@ -57,6 +44,9 @@ header {
 h1 {
   font-size: 2.5rem;
   margin: 0;
+  text-transform: uppercase;
+  font-weight: normal;
+  letter-spacing: 0.5px;
 }
 
 /* Event Form */
@@ -70,8 +60,40 @@ h1 {
 /* Event List (Grid Layout) */
 .event-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
+  max-height: calc(5 * 300px + 4 * 20px); 
+  overflow: hidden; 
+}
+.event-list .event-wrapper{
+  position: relative;
+}
+.event-list .event-wrapper svg{
+  position: absolute;
+  font-size: 55px;
+  opacity: 0.1;
+  right: 40%;
+  top: 33%;
+  color: #606060;
+}
+.event-filter{
+  display: flex;
+  flex-direction: row;
+  column-gap: 8px;
+  text-align: center;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 10px;
+  flex: 1;
+}
+
+.event-filter select,
+.event-filter input{
+  padding: 8px;
+  border: 1px solid #4c4c4c;
+  border-radius: 5px;
+  box-sizing: border-box;
+  height: 45px;
 }
 
 .event-card {
@@ -80,11 +102,41 @@ h1 {
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  transition: 0.5s ease-in-out;
+  height: 100%;
 }
 
 .event-card:hover {
-  transform: scale(1.05);
+  background-color: rgb(255, 204, 204);
+  transition: 0.5s ease-in-out;
+  cursor: pointer;
+}
+.event-card h2{
+  font-size: 19px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.event-card-detail p{
+  display: flex;
+  font-size: 14px;
+}
+.event-card-detail p span:first-child{
+  width: 38%;
+  color: #858383;
+  font-weight: 300;
+}
+.event-card-detail p span:last-child{
+  flex: 1;
+}
+.error-message{
+  color: red;
+  font-size: 12px;
+  position: relative;
+  top: -8px;
+  font-style: italic;
+}
+.error-input{
+  border-color: red;
 }
 
 /* Event Details Modal */
@@ -108,12 +160,121 @@ h1 {
   width: 100%;
 }
 
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+}
+
+.modal-content {
+  background-color: white;
+  margin: 15% auto;
+  padding: 20px;
+  width: 600px;
+  position: relative;
+  border-radius: 10px;
+}
+.modal-header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-header h2{
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+.modal-header .close{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.modal-content .description p{
+  display: flex;
+}
+.modal-content .description p span:first-child{
+  width: 20%;
+  color: #c1c1c1;
+}
+.modal-content .description p span:last-child{
+  flex: 1;
+}
+form div{
+  display: flex;
+  margin-bottom: 11px;
+  align-items: flex-start;
+}
+form div label{
+  width: 32%;
+}
+form div input,
+form div textarea,
+form div select{
+  flex: 1;
+  box-sizing: border-box;
+  border: 1px solid grey;
+  height: 40px;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+}
+form div textarea{
+  height: 100px;
+}
+.modal-content button{
+  background-color: rgb(32 169 32);
+  border-radius: 5px;
+  padding: 10px 30px;
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  transition: 0.3s ease-in-out;
+  width: 100%;
+}
+.modal-content button:hover{
+  background-color: rgb(39 113 39);
+}
+
 /* Filters */
 .filters {
   background: white;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  row-gap: 20px;
+}
+.btn-prime{
+  background-color: rgb(32 169 32);
+  border-radius: 5px;
+  padding: 10px 30px;
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: #ffffff;
+  transition: 0.3s ease-in-out;
+}
+.btn-prime:hover{
+  background-color: rgb(68, 82, 68);
+  transition: 0.3s ease-in-out;
+}
+.btn-prime.filter{
+  background-color: #b7b7b7;
+}
+.btn-prime.filter:hover{
+  background-color: #707070;
 }
 
 /* Footer */
@@ -126,6 +287,7 @@ footer {
 
 footer p {
   margin: 0;
+  font-size: 14px;
 }
 
 /* Responsive Styles */
@@ -144,5 +306,9 @@ footer p {
 
   footer {
     padding: 5px;
+  }
+
+  .modal-content {
+    width: 80%;
   }
 }
