@@ -20,3 +20,7 @@ This project consists of a frontend React application and a backend API. The fro
 ### Frontend Setup Runing
 - npm install
 - npm start
+- run browser http://localhost:3000/
+
+### Example access API List Local 
+- http://localhost:5000/events
