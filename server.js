@@ -1,32 +1,27 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const csurf = require('csurf');
-const cookieParser = require('cookie-parser');
-
-app.use(cookieParser());
-app.use(csurf({ cookie: true }));
 
 const app = express();
 const PORT = 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
-// Include CSRF token in responses
-app.use((req, res, next) => {
-    res.locals.csrfToken = req.csrfToken();
-    next();
-});
 
 let events = [];
-// Example of including CSRF token in your form responses
-app.get('/form', (req, res) => {
-    res.json({ csrfToken: res.locals.csrfToken });
-});
 
 // GET all events
 app.get('/events', (req, res) => {
-  res.json(events);
+    const { category, date } = req.query;
+
+    // Filter events based on query parameters
+    const filteredEvents = events.filter(event => {
+        return (!category || category === 'All' || event.category === category) &&
+                (!date || event.date === date);
+    });
+
+    res.json(filteredEvents);
+    res.json(events);
 });
 
 // POST a new event

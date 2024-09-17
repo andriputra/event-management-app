@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowsRotate } from '@fortawesome/free-solid-svg-icons';
 
 const EventFilter = ({ onFilterChange }) => {
   const [category, setCategory] = useState('All');
   const [date, setDate] = useState('');
-
-  useEffect(() => {
-    onFilterChange({ category, date });
-  }, [category, date, onFilterChange]);
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
@@ -18,6 +16,12 @@ const EventFilter = ({ onFilterChange }) => {
 
   const handleFilter = () => {
     onFilterChange({ category, date });
+  };
+
+  const handleReset = () => {
+    setCategory('All');
+    setDate('');
+    onFilterChange({ category: 'All', date: '' });
   };
 
   return (
@@ -34,6 +38,7 @@ const EventFilter = ({ onFilterChange }) => {
       <input type="date" name="date" id="date" value={date} onChange={handleDateChange} />
 
       <button className='btn-prime filter' onClick={handleFilter}>Filter Event</button>
+      <button className='btn-prime reset' onClick={handleReset}><FontAwesomeIcon icon={faArrowsRotate} /></button>
     </div>
   );
 };

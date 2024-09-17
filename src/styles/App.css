@@ -68,13 +68,23 @@ h1 {
 .event-list .event-wrapper{
   position: relative;
 }
-.event-list .event-wrapper svg{
+.event-list .event-wrapper > svg{
   position: absolute;
   font-size: 55px;
   opacity: 0.1;
   right: 40%;
   top: 33%;
   color: #606060;
+}
+.event-list .event-wrapper .btn-delete{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  font-size: 17px;
+  color: #e59292;
+  box-shadow: none;
+  background: transparent;
 }
 .event-filter{
   display: flex;
@@ -275,6 +285,12 @@ form div textarea{
 }
 .btn-prime.filter:hover{
   background-color: #707070;
+}
+.btn-prime.reset{
+  background-color: #f17979;
+}
+.btn-prime.reset:hover{
+  background-color: #e7baba;
 }
 
 /* Footer */

@@ -7,19 +7,15 @@ import { useEventContext } from '../context/EventProvider';
 import { fetchEvents, createEvent } from '../api';
 
 const HomePage = () => {
-  const { filter, setFilter, selectEvent, selectedEvent } = useEventContext();
-  const [showModal, setShowModal] = useState(false);
+  const { selectedEvent, selectEvent } = useEventContext();
   const [events, setEvents] = useState([]);
-
-  const handleFilterChange = (filter) => {
-    setFilter(filter);
-  };
+  const [showModal, setShowModal] = useState(false);
+  const [filters, setFilters] = useState({ category: 'All', date: '' });
 
   useEffect(() => {
     const loadEvents = async () => {
       try {
-        const { category, date } = filter;
-        const response = await fetchEvents(category, date);
+        const response = await fetchEvents(filters.category, filters.date);
         setEvents(response.data);
       } catch (error) {
         console.error('Error fetching events:', error);
@@ -27,24 +23,26 @@ const HomePage = () => {
     };
     
     loadEvents();
-  }, [filter]);
+  }, [filters]);
 
   const addEvent = async (event) => {
     try {
       await createEvent(event);
-      // Re-fetch events after adding a new event
-      const { category, date } = filter;
-      const response = await fetchEvents(category, date);
+      const response = await fetchEvents(filters.category, filters.date); 
       setEvents(response.data);
     } catch (error) {
       console.error('Error adding event:', error);
     }
   };
 
+  const onFilterChange = (newFilters) => {
+    setFilters(newFilters);
+  };
+
   return (
     <div className="homepage">
       <div className="filters">
-        <EventFilter onFilterChange={handleFilterChange} />
+        <EventFilter onFilterChange={onFilterChange} />
         <button className='btn-prime' onClick={() => setShowModal(true)}>Add Event</button>
       </div>
       {showModal && <EventForm addEvent={addEvent} onClose={() => setShowModal(false)} />}

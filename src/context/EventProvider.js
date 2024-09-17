@@ -1,47 +1,41 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 
 export const EventContext = createContext();
 
 const EventProvider = ({ children }) => {
-  const [events, setEvents] = useState([]);
-  const [categories] = useState(['All', 'Music', 'Sports', 'Tech']);
-  const [filter, setFilter] = useState({ category: 'All', date: '' });
-  const [filteredEvents, setFilteredEvents] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-
-  useEffect(() => {
-    filterEvents(filter);
-  }, [filter, events]);
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [events, setEvents] = useState([]);
+    const [categories, setCategories] = useState(['All', 'Music', 'Sports', 'Tech']);
+    const [filter, setFilter] = useState({ category: 'All', date: null });
 
   const addEvent = (event) => setEvents([...events, event]);
 
-  const filterEvents = ({ category, date }) => {
-    let filtered = events;
-
-    if (category && category !== 'All') {
-      filtered = filtered.filter(event => event.category === category);
-    }
-    
-    if (date) {
-      filtered = filtered.filter(event => event.date === date);
-    }
-
-    setFilteredEvents(filtered);
+  const selectEvent = (event) => {
+    setSelectedEvent(event);
   };
 
-  const selectEvent = (event) => setSelectedEvent(event);
+  const filterEvents = ({ category, date }) => {
+    const filtered = events.filter(
+      (event) =>
+        (category ? event.category === category : true) &&
+        (date ? event.date === date : true)
+    );
+    return filtered;
+  };
 
   return (
-    <EventContext.Provider value={{ 
-      events: filteredEvents.length > 0 ? filteredEvents : events,
-      categories,
-      filter,
-      setFilter,
-      addEvent,
-      filterEvents,
-      selectEvent,
-      selectedEvent 
-    }}>
+    <EventContext.Provider 
+        value={{ 
+            selectedEvent, 
+            selectEvent, 
+            events, 
+            categories, 
+            filter, 
+            setFilter, 
+            addEvent, 
+            filterEvents, 
+            setCategories 
+        }}>
       {children}
     </EventContext.Provider>
   );
